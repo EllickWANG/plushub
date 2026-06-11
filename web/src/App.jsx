@@ -36,6 +36,7 @@ import Token from './pages/Token';
 import Redemption from './pages/Redemption';
 import TopUp from './pages/TopUp';
 import Log from './pages/Log';
+import AlertLog from './pages/AlertLog';
 import Chat from './pages/Chat';
 import Chat2Link from './pages/Chat2Link';
 import Midjourney from './pages/Midjourney';
@@ -55,6 +56,7 @@ const Dashboard = lazy(() => import('./pages/Dashboard'));
 const About = lazy(() => import('./pages/About'));
 const UserAgreement = lazy(() => import('./pages/UserAgreement'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
+const RefundPolicy = lazy(() => import('./pages/RefundPolicy'));
 
 function DynamicOAuth2Callback() {
   const { provider } = useParams();
@@ -286,6 +288,14 @@ function App() {
           }
         />
         <Route
+          path='/console/alert-log'
+          element={
+            <AdminRoute>
+              <AlertLog />
+            </AdminRoute>
+          }
+        />
+        <Route
           path='/console'
           element={
             <PrivateRoute>
@@ -355,6 +365,14 @@ function App() {
           element={
             <Suspense fallback={<Loading></Loading>} key={location.pathname}>
               <PrivacyPolicy />
+            </Suspense>
+          }
+        />
+        <Route
+          path='/refund-policy'
+          element={
+            <Suspense fallback={<Loading></Loading>} key={location.pathname}>
+              <RefundPolicy />
             </Suspense>
           }
         />

@@ -75,6 +75,7 @@ import {
   Package,
   Server,
   CalendarClock,
+  ShieldAlert,
 } from 'lucide-react';
 import {
   SiAtlassian,
@@ -145,6 +146,8 @@ export function getLucideIcon(key, selected = false) {
       return <Server {...commonProps} color={iconColor} />;
     case 'subscription':
       return <CalendarClock {...commonProps} color={iconColor} />;
+    case 'alert_log':
+      return <ShieldAlert {...commonProps} color={iconColor} />;
     case 'setting':
       return <Settings {...commonProps} color={iconColor} />;
     default:
@@ -330,6 +333,7 @@ export function getChannelIcon(channelType) {
     case 1: // OpenAI
     case 3: // Azure OpenAI
     case 57: // Codex
+    case 58: // GpuGeek
       return <OpenAI size={iconSize} />;
     case 2: // Midjourney Proxy
     case 5: // Midjourney Proxy Plus
@@ -1622,10 +1626,9 @@ function renderPriceSimpleCore({
 
 export function renderTaskBillingProcess(other, content) {
   if (other?.task_id != null) {
-    return renderBillingArticle(
-      [content].filter(Boolean),
-      { showReferenceNote: false },
-    );
+    return renderBillingArticle([content].filter(Boolean), {
+      showReferenceNote: false,
+    });
   }
   return renderBillingArticle([
     buildBillingText('任务预扣费（将在任务完成后按实际token重算）'),

@@ -1006,3 +1006,98 @@ html.dark .with-pastel-balls::before {
 }
 
 .ec-dbcd0a3c01b55203 { forced-color-adjust: auto; }
+
+/* ==================== PlusHub 品牌主题（UI 设计稿落地） ==================== */
+:root {
+  --ph-blue: #1c7aff;
+  --ph-blue-btn: #1e85fe;
+  --ph-blue-hover: #1668e6;
+  --ph-card-bg: #f3f6fa;
+  --ph-text-0: #1f2329;
+  --ph-text-1: #6b7280;
+}
+
+body {
+  --semi-color-primary: var(--ph-blue);
+  --semi-color-primary-hover: var(--ph-blue-hover);
+  --semi-color-primary-active: #135ccc;
+}
+
+/* 首页 Hero：直接使用设计稿导出的蜂窝点阵背景原图 */
+.ph-hero {
+  position: relative;
+  overflow: hidden;
+  background: #1c7aff url('/hero-bg.webp') center / cover no-repeat;
+}
+
+/* Hero 右侧 3D 插画：左/下边缘渐隐，与背景融合 */
+.ph-hero-art {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 1) 18%
+  );
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 1) 18%);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* 登录/注册页浅色渐变背景 */
+.ph-auth-bg {
+  background:
+    radial-gradient(
+      900px 480px at 0% 100%,
+      rgba(76, 194, 255, 0.22) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 480px at 100% 100%,
+      rgba(76, 194, 255, 0.16) 0%,
+      transparent 60%
+    ),
+    linear-gradient(180deg, #f7fafc 0%, #eef6fc 100%);
+}
+
+html.dark .ph-auth-bg {
+  background: linear-gradient(180deg, #16181d 0%, #101418 100%);
+}
+
+/* 登录/注册卡片内输入框：白底描边（设计稿样式） */
+.ph-auth-bg .semi-input-wrapper {
+  background-color: #ffffff;
+  border: 1px solid #dde3ea;
+  border-radius: 10px !important;
+}
+
+.ph-auth-bg .semi-input-wrapper:hover {
+  border-color: #b8c4d2;
+}
+
+.ph-auth-bg .semi-input-wrapper-focus {
+  border-color: var(--ph-blue);
+}
+
+html.dark .ph-auth-bg .semi-input-wrapper {
+  background-color: var(--semi-color-fill-0);
+  border-color: var(--semi-color-border);
+}
+
+/* 三步上手：步骤间虚线连接 */
+.ph-step-dots {
+  flex: 1 1 auto;
+  border-top: 2px dotted #d3d9e0;
+  margin: 0 24px;
+}
+
+html.dark .ph-step-dots {
+  border-top-color: #3f4750;
+}
+
+/* 蓝色点阵横幅（三步上手区块，复用 Hero 背景原图） */
+.ph-band {
+  background: #1c7aff url('/hero-bg.webp') center / cover no-repeat;
+}
+
+.ph-band .ph-step-dots {
+  border-top-color: rgba(255, 255, 255, 0.4);
+}

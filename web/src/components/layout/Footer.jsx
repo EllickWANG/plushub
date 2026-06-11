@@ -19,9 +19,12 @@ For commercial licensing, please contact support@quantumnous.com
 
 import React, { useEffect, useState, useMemo, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { Typography } from '@douyinfe/semi-ui';
 import { getFooterHTML, getLogo, getSystemName } from '../../helpers';
 import { StatusContext } from '../../context/Status';
+import { Send, Mail, MessageCircle } from 'lucide-react';
+import { FaWhatsapp } from 'react-icons/fa';
 
 const FooterBar = () => {
   const { t } = useTranslation();
@@ -40,12 +43,49 @@ const FooterBar = () => {
 
   const currentYear = new Date().getFullYear();
 
+  // 双色字标：形如 “PLUSHUB” 的名称前段为品牌蓝、“HUB” 为深色
+  const wordmarkMatch = /^(.+?)(hub)$/i.exec(systemName || '');
+
+  const contactIcons = [
+    { key: 'whatsapp', icon: <FaWhatsapp size={15} />, href: '#' },
+    { key: 'telegram', icon: <Send size={15} />, href: '#' },
+    { key: 'wechat', icon: <MessageCircle size={15} />, href: '#' },
+    { key: 'email', icon: <Mail size={15} />, href: '#' },
+  ];
+
+  // 链接为 '#' 的条目为占位，部署时按需补充实际地址
+  const linkColumns = [
+    {
+      title: t('产品'),
+      links: [
+        { label: t('首页'), to: '/' },
+        { label: t('模型广场'), to: '/pricing' },
+        { label: t('联系我们'), href: '#' },
+      ],
+    },
+    {
+      title: t('法律'),
+      links: [
+        { label: t('隐私政策'), to: '/privacy-policy' },
+        { label: t('服务条款'), to: '/user-agreement' },
+        { label: t('退款政策'), to: '/refund-policy' },
+        { label: t('可接受使用政策'), href: '#' },
+      ],
+    },
+    {
+      title: t('联系方式'),
+      links: [
+        { label: 'Whatsapp', href: '#' },
+        { label: t('微信'), href: '#' },
+        { label: 'Telegram', href: '#' },
+        { label: t('邮箱'), href: '#' },
+      ],
+    },
+  ];
+
   const customFooter = useMemo(
     () => (
-      <footer className='relative h-auto py-16 px-6 md:px-24 w-full flex flex-col items-center justify-between overflow-hidden'>
-        <div className='absolute hidden md:block top-[204px] left-[-100px] w-[151px] h-[151px] rounded-full bg-[#FFD166]'></div>
-        <div className='absolute md:hidden bottom-[20px] left-[-50px] w-[80px] h-[80px] rounded-full bg-[#FFD166] opacity-60'></div>
-
+      <footer className='relative h-auto py-14 px-6 w-full flex flex-col items-center justify-between overflow-hidden border-t border-semi-color-border'>
         {isDemoSiteMode && (
           <div className='flex flex-col md:flex-row justify-between w-full max-w-[1110px] mb-10 gap-8'>
             <div className='flex-shrink-0'>
@@ -188,25 +228,72 @@ const FooterBar = () => {
           </div>
         )}
 
-        <div className='flex flex-col md:flex-row items-center justify-between w-full max-w-[1110px] gap-6'>
-          <div className='flex flex-wrap items-center gap-2'>
+        <div className='flex flex-col lg:flex-row items-start justify-between w-full max-w-[1216px] gap-12'>
+          <div className='flex flex-col gap-5'>
+            <div className='flex items-center gap-2'>
+              <img src={logo} alt={systemName} className='w-7 h-7' />
+              <span className='text-xl font-bold tracking-wide !text-semi-color-text-0'>
+                {wordmarkMatch ? (
+                  <>
+                    <span style={{ color: 'var(--ph-blue)' }}>
+                      {wordmarkMatch[1]}
+                    </span>
+                    <span>{wordmarkMatch[2]}</span>
+                  </>
+                ) : (
+                  systemName
+                )}
+              </span>
+            </div>
             <Typography.Text className='text-sm !text-semi-color-text-1'>
               © {currentYear} {systemName}. {t('版权所有')}
             </Typography.Text>
+            <div className='flex items-center gap-4'>
+              {contactIcons.map((item) => (
+                <a
+                  key={item.key}
+                  href={item.href}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='w-8 h-8 rounded-full bg-[#9AA4B2] hover:bg-[#7C8694] text-[#ffffff] flex items-center justify-center transition-colors'
+                >
+                  {item.icon}
+                </a>
+              ))}
+            </div>
           </div>
 
-          <div className='text-sm'>
-            <span className='!text-semi-color-text-1'>
-              {t('设计与开发由')}{' '}
-            </span>
-            <a
-              href='https://github.com/QuantumNous/new-api'
-              target='_blank'
-              rel='noopener noreferrer'
-              className='!text-semi-color-primary font-medium'
-            >
-              New API
-            </a>
+          <div className='grid grid-cols-2 sm:grid-cols-3 gap-10 lg:gap-24'>
+            {linkColumns.map((column) => (
+              <div key={column.title} className='text-left'>
+                <p className='!text-semi-color-text-0 font-semibold mb-5'>
+                  {column.title}
+                </p>
+                <div className='flex flex-col gap-3.5'>
+                  {column.links.map((link) =>
+                    link.to ? (
+                      <Link
+                        key={link.label}
+                        to={link.to}
+                        className='text-sm !text-semi-color-text-1 hover:!text-semi-color-text-0'
+                      >
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <a
+                        key={link.label}
+                        href={link.href}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='text-sm !text-semi-color-text-1 hover:!text-semi-color-text-0'
+                      >
+                        {link.label}
+                      </a>
+                    ),
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </footer>
@@ -231,14 +318,9 @@ const FooterBar = () => {
               <span className='!text-semi-color-text-1'>
                 {t('设计与开发由')}{' '}
               </span>
-              <a
-                href='https://github.com/QuantumNous/new-api'
-                target='_blank'
-                rel='noopener noreferrer'
-                className='!text-semi-color-primary font-medium'
-              >
-                New API
-              </a>
+              <span className='!text-semi-color-primary font-medium'>
+                Cosmic AI
+              </span>
             </div>
           </div>
         </footer>

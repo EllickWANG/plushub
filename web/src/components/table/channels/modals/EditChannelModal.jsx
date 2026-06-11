@@ -61,6 +61,7 @@ import ModelSelectModal from './ModelSelectModal';
 import SingleModelSelectModal from './SingleModelSelectModal';
 import OllamaModelModal from './OllamaModelModal';
 import CodexOAuthModal from './CodexOAuthModal';
+import GpuGeekPriceSyncModal from './GpuGeekPriceSyncModal';
 import ParamOverrideEditorModal from './ParamOverrideEditorModal';
 import JSONEditor from '../../../common/ui/JSONEditor';
 import SecureVerificationModal from '../../../common/modals/SecureVerificationModal';
@@ -131,7 +132,7 @@ const DEPRECATED_DOUBAO_CODING_PLAN_BASE_URL = 'doubao-coding-plan';
 
 // 支持并且已适配通过接口获取模型列表的渠道类型
 const MODEL_FETCHABLE_TYPES = new Set([
-  1, 4, 14, 34, 17, 26, 27, 24, 47, 25, 20, 23, 31, 40, 42, 48, 43,
+  1, 4, 14, 34, 17, 26, 27, 24, 47, 25, 20, 23, 31, 40, 42, 48, 43, 58,
 ]);
 
 function type2secretPrompt(type) {
@@ -150,7 +151,7 @@ function type2secretPrompt(type) {
     case 45:
       return '请输入渠道对应的鉴权密钥, 豆包语音输入：AppId|AccessToken';
     case 50:
-      return '按照如下格式输入: AccessKey|SecretKey, 如果上游是New API，则直接输ApiKey';
+      return '按照如下格式输入: AccessKey|SecretKey, 如果上游是Cosmic AI，则直接输ApiKey';
     case 51:
       return '按照如下格式输入: AccessKey|SecretAccessKey';
     case 57:
@@ -236,6 +237,7 @@ const EditChannelModal = (props) => {
     useState(false);
   const [modelMappingValueModalModels, setModelMappingValueModalModels] =
     useState([]);
+  const [gpuGeekPriceSyncVisible, setGpuGeekPriceSyncVisible] = useState(false);
   const [modelMappingValueKey, setModelMappingValueKey] = useState('');
   const [modelMappingValueSelected, setModelMappingValueSelected] =
     useState('');
@@ -601,7 +603,7 @@ const EditChannelModal = (props) => {
       Modal.confirm({
         title: '警告',
         content:
-          '不需要在末尾加/v1，New API会自动处理，添加后可能导致请求失败，是否继续？',
+          '不需要在末尾加/v1，Cosmic AI会自动处理，添加后可能导致请求失败，是否继续？',
         onOk: () => {
           setInputs((inputs) => ({ ...inputs, [name]: value }));
         },
@@ -653,6 +655,13 @@ const EditChannelModal = (props) => {
           setInputs((prevInputs) => ({
             ...prevInputs,
             base_url: 'https://ark.cn-beijing.volces.com',
+          }));
+          break;
+        case 58:
+          localModels = getChannelModels(value);
+          setInputs((prevInputs) => ({
+            ...prevInputs,
+            base_url: 'https://api.gpugeek.com',
           }));
           break;
         default:
@@ -2614,6 +2623,38 @@ const EditChannelModal = (props) => {
                       />
                     )}
 
+                    {inputs.type === 58 && (
+                      <Banner
+                        type='info'
+                        closeIcon={null}
+                        className='mb-4 rounded-xl'
+                        description={
+                          <div className='flex flex-col gap-2'>
+                            <Text>
+                              {t(
+                                'GpuGeek 渠道按 OpenAI 兼容协议调用，可单独拉取上游价格或复制本地相似模型价格，确认后写入系统价格配置。',
+                              )}
+                            </Text>
+                            {isEdit ? (
+                              <Button
+                                size='small'
+                                type='primary'
+                                theme='outline'
+                                className='w-fit'
+                                onClick={() => setGpuGeekPriceSyncVisible(true)}
+                              >
+                                {t('同步 GpuGeek 价格')}
+                              </Button>
+                            ) : (
+                              <Text size='small' type='tertiary'>
+                                {t('保存渠道后可同步价格。')}
+                              </Text>
+                            )}
+                          </div>
+                        }
+                      />
+                    )}
+
                     {inputs.type === 20 && (
                       <Form.Switch
                         field='is_enterprise_account'
@@ -3348,7 +3389,7 @@ const EditChannelModal = (props) => {
                               showClear
                               disabled={isIonetLocked}
                               extraText={t(
-                                '对于官方渠道，new-api已经内置地址，除非是第三方代理站点或者Azure的特殊接入地址，否则不需要填写',
+                                '对于官方渠道，Cosmic AI已经内置地址，除非是第三方代理站点或者Azure的特殊接入地址，否则不需要填写',
                               )}
                             />
                           </div>
@@ -3917,6 +3958,12 @@ const EditChannelModal = (props) => {
           }
           showSuccess(t('模型列表已追加更新'));
         }}
+      />
+      <GpuGeekPriceSyncModal
+        visible={gpuGeekPriceSyncVisible}
+        onCancel={() => setGpuGeekPriceSyncVisible(false)}
+        channelId={channelId}
+        channelName={inputs.name}
       />
     </>
   );

@@ -32,6 +32,7 @@ const ChannelsActions = ({
   enableBatchDelete,
   batchDeleteChannels,
   setShowBatchSetTag,
+  setShowUnifiedModelMapping,
   testAllChannels,
   fixChannelsAbilities,
   updateAllChannelsBalance,
@@ -88,6 +89,15 @@ const ChannelsActions = ({
             className='w-full md:w-auto'
           >
             {t('批量设置标签')}
+          </Button>
+
+          <Button
+            size='small'
+            type='tertiary'
+            onClick={() => setShowUnifiedModelMapping(true)}
+            className='w-full md:w-auto'
+          >
+            {t('统一模型映射')}
           </Button>
 
           <Dropdown

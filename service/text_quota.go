@@ -78,8 +78,12 @@ func isLegacyClaudeDerivedOpenAIUsage(relayInfo *relaycommon.RelayInfo, usage *d
 }
 
 func calculateTextQuotaSummary(ctx *gin.Context, relayInfo *relaycommon.RelayInfo, usage *dto.Usage) textQuotaSummary {
+	modelName := relayInfo.OriginModelName
+	if relayInfo.PriceData.BillingModelName != "" {
+		modelName = relayInfo.PriceData.BillingModelName
+	}
 	summary := textQuotaSummary{
-		ModelName:            relayInfo.OriginModelName,
+		ModelName:            modelName,
 		TokenName:            ctx.GetString("token_name"),
 		UseTimeSeconds:       time.Now().Unix() - relayInfo.StartTime.Unix(),
 		CompletionRatio:      relayInfo.PriceData.CompletionRatio,

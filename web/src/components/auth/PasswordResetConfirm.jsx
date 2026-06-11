@@ -18,20 +18,13 @@ For commercial licensing, please contact support@quantumnous.com
 */
 
 import React, { useEffect, useState } from 'react';
-import {
-  API,
-  copy,
-  showError,
-  showNotice,
-  getLogo,
-  getSystemName,
-} from '../../helpers';
+import { API, copy, showError, showNotice } from '../../helpers';
 import { useSearchParams, Link } from 'react-router-dom';
-import { Button, Card, Form, Typography, Banner } from '@douyinfe/semi-ui';
+import { Button, Form, Typography, Banner } from '@douyinfe/semi-ui';
 import { IconMail, IconLock, IconCopy } from '@douyinfe/semi-icons';
 import { useTranslation } from 'react-i18next';
 
-const { Text, Title } = Typography;
+const { Text } = Typography;
 
 const PasswordResetConfirm = () => {
   const { t } = useTranslation();
@@ -48,9 +41,6 @@ const PasswordResetConfirm = () => {
   const [newPassword, setNewPassword] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
   const [formApi, setFormApi] = useState(null);
-
-  const logo = getLogo();
-  const systemName = getSystemName();
 
   useEffect(() => {
     let token = searchParams.get('token');
@@ -104,33 +94,15 @@ const PasswordResetConfirm = () => {
   }
 
   return (
-    <div className='relative overflow-hidden bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
-      {/* 背景模糊晕染球 */}
-      <div
-        className='blur-ball blur-ball-indigo'
-        style={{ top: '-80px', right: '-80px', transform: 'none' }}
-      />
-      <div
-        className='blur-ball blur-ball-teal'
-        style={{ top: '50%', left: '-120px' }}
-      />
-      <div className='w-full max-w-sm mt-[60px]'>
-        <div className='flex flex-col items-center'>
-          <div className='w-full max-w-md'>
-            <div className='flex items-center justify-center mb-6 gap-2'>
-              <img src={logo} alt='Logo' className='h-10 rounded-full' />
-              <Title heading={3} className='!text-gray-800'>
-                {systemName}
-              </Title>
-            </div>
-
-            <Card className='border-0 !rounded-2xl overflow-hidden'>
-              <div className='flex justify-center pt-6 pb-2'>
-                <Title heading={3} className='text-gray-800 dark:text-gray-200'>
-                  {t('密码重置确认')}
-                </Title>
-              </div>
-              <div className='px-2 py-8'>
+    <div className='ph-auth-bg min-h-screen flex items-start justify-center px-4 pt-32 pb-16'>
+      <div className='w-full max-w-[560px]'>
+        <div className='flex flex-col'>
+          <div className='w-full'>
+            <div className='bg-[#ffffff] dark:bg-[#27272a] rounded-2xl shadow-sm px-7 py-9 md:px-9'>
+              <h1 className='text-[28px] font-bold text-semi-color-text-0 mb-7'>
+                {t('密码重置确认')}
+              </h1>
+              <div>
                 {!isValidResetLink && (
                   <Banner
                     type='danger'
@@ -181,10 +153,10 @@ const PasswordResetConfirm = () => {
                     />
                   )}
 
-                  <div className='space-y-2 pt-2'>
+                  <div className='space-y-2 pt-4'>
                     <Button
                       theme='solid'
-                      className='w-full !rounded-full'
+                      className='w-full !h-12 !rounded-full !text-base'
                       type='primary'
                       htmlType='submit'
                       onClick={handleSubmit}
@@ -199,17 +171,17 @@ const PasswordResetConfirm = () => {
                 </Form>
 
                 <div className='mt-6 text-center text-sm'>
-                  <Text>
+                  <Text className='!text-sm'>
                     <Link
                       to='/login'
-                      className='text-blue-600 hover:text-blue-800 font-medium'
+                      className='text-semi-color-primary font-medium'
                     >
                       {t('返回登录')}
                     </Link>
                   </Text>
                 </div>
               </div>
-            </Card>
+            </div>
           </div>
         </div>
       </div>

@@ -390,6 +390,7 @@ func processChannelError(c *gin.Context, channelError types.ChannelError, err *t
 		}
 		useTimeSeconds := int(time.Since(startTime).Seconds())
 		model.RecordErrorLog(c, userId, channelId, modelName, tokenName, err.MaskSensitiveErrorWithStatusCode(), tokenId, useTimeSeconds, false, userGroup, other)
+		model.RecordRelayErrorAlertLog(c, err, other, useTimeSeconds)
 	}
 
 }

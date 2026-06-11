@@ -294,12 +294,16 @@ func NewBillingSession(c *gin.Context, relayInfo *relaycommon.RelayInfo, preCons
 		if subConsume <= 0 {
 			subConsume = 1
 		}
+		modelName := relayInfo.OriginModelName
+		if relayInfo.BillingModelName != "" {
+			modelName = relayInfo.BillingModelName
+		}
 		session := &BillingSession{
 			relayInfo: relayInfo,
 			funding: &SubscriptionFunding{
 				requestId: relayInfo.RequestId,
 				userId:    relayInfo.UserId,
-				modelName: relayInfo.OriginModelName,
+				modelName: modelName,
 				amount:    subConsume,
 			},
 		}

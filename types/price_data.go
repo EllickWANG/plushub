@@ -9,6 +9,7 @@ type GroupRatioInfo struct {
 }
 
 type PriceData struct {
+	BillingModelName     string
 	FreeModel            bool
 	ModelPrice           float64
 	ModelRatio           float64

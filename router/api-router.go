@@ -210,6 +210,13 @@ func SetApiRouter(router *gin.Engine) {
 			channelRoute.GET("/search", controller.SearchChannels)
 			channelRoute.GET("/models", controller.ChannelListModels)
 			channelRoute.GET("/models_enabled", controller.EnabledListModels)
+			channelRoute.GET("/model_mapping/search", controller.SearchChannelModelMappings)
+			channelRoute.GET("/model_mapping/summary", controller.GetChannelModelMappingSummary)
+			channelRoute.GET("/model_mapping/list", controller.ListChannelModelMappings)
+			channelRoute.POST("/model_mapping/apply", controller.ApplyChannelModelMappings)
+			channelRoute.DELETE("/model_mapping", controller.DeleteChannelModelMapping)
+			channelRoute.POST("/:id/gpugeek/prices/fetch", middleware.RootAuth(), controller.FetchGpuGeekPricePreview)
+			channelRoute.POST("/:id/gpugeek/prices/apply", middleware.RootAuth(), controller.ApplyGpuGeekPrices)
 			channelRoute.GET("/:id", controller.GetChannel)
 			channelRoute.POST("/:id/key", middleware.RootAuth(), middleware.CriticalRateLimit(), middleware.DisableCache(), middleware.SecureVerificationRequired(), controller.GetChannelKey)
 			channelRoute.GET("/test", controller.TestAllChannels)
@@ -290,6 +297,15 @@ func SetApiRouter(router *gin.Engine) {
 		logRoute.GET("/search", middleware.AdminAuth(), controller.SearchAllLogs)
 		logRoute.GET("/self", middleware.UserAuth(), controller.GetUserLogs)
 		logRoute.GET("/self/search", middleware.UserAuth(), middleware.SearchRateLimit(), controller.SearchUserLogs)
+
+		alertLogRoute := apiRouter.Group("/alert_log")
+		alertLogRoute.Use(middleware.AdminAuth())
+		{
+			alertLogRoute.GET("/", controller.GetAlertLogs)
+			alertLogRoute.GET("/stat", controller.GetAlertLogStats)
+			alertLogRoute.PATCH("/:id/resolve", controller.ResolveAlertLog)
+			alertLogRoute.DELETE("/", controller.DeleteHistoryAlertLogs)
+		}
 
 		dataRoute := apiRouter.Group("/data")
 		dataRoute.GET("/", middleware.AdminAuth(), controller.GetAllQuotaDates)

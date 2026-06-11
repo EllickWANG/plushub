@@ -101,6 +101,7 @@ type RelayInfo struct {
 	UsePrice               bool
 	RelayMode              int
 	OriginModelName        string
+	BillingModelName       string
 	RequestURLPath         string
 	RequestHeaders         map[string]string
 	ShouldIncludeUsage     bool

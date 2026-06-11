@@ -18,7 +18,7 @@ For commercial licensing, please contact support@quantumnous.com
 */
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import SkeletonWrapper from '../components/SkeletonWrapper';
 
 const Navigation = ({
@@ -28,15 +28,25 @@ const Navigation = ({
   userState,
   pricingRequireAuth,
 }) => {
+  const location = useLocation();
+
+  const isLinkActive = (link) => {
+    if (link.isExternal) return false;
+    if (link.to === '/') return location.pathname === '/';
+    return location.pathname.startsWith(link.to);
+  };
+
   const renderNavLinks = () => {
     const baseClasses =
-      'flex-shrink-0 flex items-center gap-1 font-semibold rounded-md transition-all duration-200 ease-in-out';
-    const hoverClasses = 'hover:text-semi-color-primary';
+      'flex-shrink-0 flex items-center gap-1 text-sm font-medium rounded-md transition-all duration-200 ease-in-out';
     const spacingClasses = isMobile ? 'p-1' : 'p-2';
 
-    const commonLinkClasses = `${baseClasses} ${spacingClasses} ${hoverClasses}`;
-
     return mainNavLinks.map((link) => {
+      const active = isLinkActive(link);
+      const colorClasses = active
+        ? '!text-semi-color-primary font-semibold'
+        : 'text-semi-color-text-0 hover:text-semi-color-primary';
+      const commonLinkClasses = `${baseClasses} ${spacingClasses} ${colorClasses}`;
       const linkContent = <span>{link.text}</span>;
 
       if (link.isExternal) {

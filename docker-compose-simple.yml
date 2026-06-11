@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  cosmic-ai:
+    image: registry.cn-hangzhou.aliyuncs.com/ellicksy/public:new-api_v1.0.1
+    container_name: cosmic-ai
+    restart: always
+    ports:
+      - "17821:17821"
+    volumes:
+      - ./data:/data
+    environment:
+      - TZ=Asia/Shanghai

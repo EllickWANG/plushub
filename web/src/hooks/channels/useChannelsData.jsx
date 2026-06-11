@@ -63,6 +63,7 @@ export const useChannelsData = () => {
   const [selectedChannels, setSelectedChannels] = useState([]);
   const [enableTagMode, setEnableTagMode] = useState(false);
   const [showBatchSetTag, setShowBatchSetTag] = useState(false);
+  const [showUnifiedModelMapping, setShowUnifiedModelMapping] = useState(false);
   const [batchSetTagValue, setBatchSetTagValue] = useState('');
   const [compactMode, setCompactMode] = useTableCompactMode('channels');
 
@@ -1160,6 +1161,8 @@ export const useChannelsData = () => {
     setSelectedChannels,
     showBatchSetTag,
     setShowBatchSetTag,
+    showUnifiedModelMapping,
+    setShowUnifiedModelMapping,
     batchSetTagValue,
     setBatchSetTagValue,
 

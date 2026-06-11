@@ -89,17 +89,18 @@ export default defineConfig({
   },
   server: {
     host: '0.0.0.0',
+    port: 17822,
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:17821',
         changeOrigin: true,
       },
       '/mj': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:17821',
         changeOrigin: true,
       },
       '/pg': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:17821',
         changeOrigin: true,
       },
     },
