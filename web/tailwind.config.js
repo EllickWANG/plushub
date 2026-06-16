@@ -19,6 +19,11 @@ For commercial licensing, please contact support@quantumnous.com
 
 export default {
   content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
+  // 主题由应用通过 html.dark 类手动切换（见 context/Theme/index.jsx），
+  // 因此 dark: 变体必须跟随该类，而非默认的 prefers-color-scheme 媒体查询。
+  // 否则当系统主题与应用内所选主题不一致时（如浅色系统 + 应用内深色），
+  // dark: 样式不会生效，会导致顶部图标等元素在白色 header 上变成白色而“消失”。
+  darkMode: 'class',
   theme: {
     colors: {
       'semi-color-white': 'var(--semi-color-white)',

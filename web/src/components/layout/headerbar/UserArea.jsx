@@ -150,7 +150,7 @@ const UserArea = ({
           <Button
             theme='borderless'
             type='tertiary'
-            className='flex items-center justify-center !rounded-full !px-5 !h-9 !bg-[#F3F6FA] hover:!bg-[#E8EDF4] dark:!bg-semi-color-fill-1 dark:hover:!bg-semi-color-fill-2 transition-colors'
+            className='flex items-center justify-center !rounded-full !px-5 !h-9 !bg-semi-color-fill-0 hover:!bg-semi-color-fill-1 transition-colors'
           >
             <span className='!text-sm !font-medium !text-semi-color-text-0'>
               {t('登录')}
